@@ -1,0 +1,8 @@
+.active {
+	color: green;
+}
+
+.inactive {
+	color: red;
+	/* margin-right: 25px; */
+}
