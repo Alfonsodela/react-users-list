@@ -11,7 +11,7 @@ const UsersList = ({ users, children }) => {
 
 	return (
 		<div className={style.list}>
-			{children}
+			{children} 
 			{usersRender}
 		</div>
 	);
