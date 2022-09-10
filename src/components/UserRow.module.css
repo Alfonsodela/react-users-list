@@ -10,11 +10,13 @@
 }
 
 .name {
-	width: 60%;
+	width: 40%;
+	font-weight: bold;
 }
 
 .active,
-.role {
+.role,
+.action {
 	width: 20%;
 
 	display: flex;
@@ -22,6 +24,3 @@
 	align-items: center;
 }
 
-.name span{
-	font-weight: bold;
-}
