@@ -10,7 +10,7 @@ const UsersList = ({ users, children }) => {
 		);
 
 	return (
-		<div className={style.list}>
+		<div className={style.wrapper}>
 			{children} 
 			{usersRender}
 		</div>
