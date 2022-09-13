@@ -6,7 +6,9 @@ const UsersList = ({ users, children }) => {
 	const [search, setSearch] = useState('');
 
 	const usersFiltered = search
-		? users.filter(user => user.name.toLowerCase().startsWith(search.toLowerCase()))
+		? users.filter(user =>
+				user.name.toLowerCase().startsWith(search.toLowerCase())
+		  )
 		: users;
 
 	const usersRender =
@@ -19,10 +21,13 @@ const UsersList = ({ users, children }) => {
 	return (
 		<div className={style.wrapper}>
 			{children}
-			<input type='text' name='search' value={search} onChange={(ev) => setSearch(ev.target.value)}
-			>
-
-			</input>
+			<label></label>
+			<input
+				type='text'
+				name='search'
+				value={search}
+				onChange={ev => setSearch(ev.target.value)}
+			></input>
 			{usersRender}
 		</div>
 	);
