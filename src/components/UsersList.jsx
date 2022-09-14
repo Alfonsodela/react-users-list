@@ -5,7 +5,8 @@ import { useState } from 'react';
 const UsersList = ({ users }) => {
 	const [search, setSearch] = useState('');
 
-	const usersRender = filterAndRenderUsers(users, search);
+	const usersFiltered = filterUsersByName(users, search);
+	const usersRender = renderUsers(usersFiltered);
 
 	return (
 		<div className={style.wrapper}>
@@ -22,23 +23,20 @@ const UsersList = ({ users }) => {
 	);
 };
 
-const filterAndRenderUsers = (users, search) => {
-	const normalizedSearch = search.toLowerCase();
+const filterUsersByName = (users, search) => {
+	if (!search) return users;
 
-	const usersFiltered = search
-		? users.filter(user =>
-				user.name.toLowerCase().startsWith(search.toLowerCase(normalizedSearch))
-		  )
-		: users;
+	const lowerCasedSearch = search.toLowerCase();
 
-	const usersRender =
-		usersFiltered.length > 0 ? (
-			usersFiltered.map(item => <UserRow key={item.name} {...item} />)
-		) : (
-			<p>No hay usuarios</p>
-		);
+	return users.filter(user =>
+		user.name.toLowerCase().startsWith(lowerCasedSearch)
+	);
+};
 
-	return usersRender;
+const renderUsers = users => {
+	if (users.length <= 0) return <p>No hay usuarios</p>;
+
+	return users.map(item => <UserRow key={item.name} {...item} />);
 };
 
 export default UsersList;
