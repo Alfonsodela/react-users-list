@@ -1,8 +1,25 @@
-
-
 .wrapper {
 	width: 100%;
 	max-width: 600px;
 	margin: auto;
 	padding: 1rem;
+}
+
+.form {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	padding: 1rem;
+}
+
+.active {
+	display: flex;
+	align-items: center;
+}
+
+.active input[type='checkbox'] {
+	height: 1rem;
+	width: 1rem;
+	margin-right: 0.5rem;
 }
