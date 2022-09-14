@@ -2,25 +2,14 @@ import UserRow from './UserRow';
 import style from './UsersList.module.css';
 import { useState } from 'react';
 
-const UsersList = ({ users, children }) => {
+const UsersList = ({ users }) => {
 	const [search, setSearch] = useState('');
 
-	const usersFiltered = search
-		? users.filter(user =>
-				user.name.toLowerCase().startsWith(search.toLowerCase())
-		  )
-		: users;
-
-	const usersRender =
-		usersFiltered.length > 0 ? (
-			usersFiltered.map(item => <UserRow key={UserRow.name} {...item} />)
-		) : (
-			<p>No hay usuarios</p>
-		);
+	const usersRender = filterAndRenderUsers(users, search);
 
 	return (
 		<div className={style.wrapper}>
-			{children}
+			<h1>Listado de usuarios</h1>
 			<label></label>
 			<input
 				type='text'
@@ -31,6 +20,25 @@ const UsersList = ({ users, children }) => {
 			{usersRender}
 		</div>
 	);
+};
+
+const filterAndRenderUsers = (users, search) => {
+	const normalizedSearch = search.toLowerCase();
+
+	const usersFiltered = search
+		? users.filter(user =>
+				user.name.toLowerCase().startsWith(search.toLowerCase(normalizedSearch))
+		  )
+		: users;
+
+	const usersRender =
+		usersFiltered.length > 0 ? (
+			usersFiltered.map(item => <UserRow key={item.name} {...item} />)
+		) : (
+			<p>No hay usuarios</p>
+		);
+
+	return usersRender;
 };
 
 export default UsersList;

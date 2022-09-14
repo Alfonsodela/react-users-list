@@ -24,9 +24,7 @@ const users = [
 ];
 
 const App = () => (
-	<UsersList users={users}>
-		<h1>Listado de usuarios</h1>
-	</UsersList>
+	<UsersList users={users}/>
 );
 
 export default App;
