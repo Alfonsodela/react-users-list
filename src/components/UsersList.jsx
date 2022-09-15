@@ -1,6 +1,7 @@
-import UserRow from './UserRow';
 import style from './UsersList.module.css';
 import { useState } from 'react';
+import UsersListFilters from './UsersListFilters';
+import UsersListRows from './UsersListRows';
 
 const UsersList = ({ users }) => {
 	const [search, setSearch] = useState('');
@@ -10,37 +11,25 @@ const UsersList = ({ users }) => {
 	let usersFiltered = filterActiveUsers(users, onlyActive);
 	usersFiltered = filterUsersByName(usersFiltered, search);
 	usersFiltered = sortUsers(usersFiltered, sortBy);
-	const usersRender = renderUsers(usersFiltered);
 
 	return (
 		<div className={style.wrapper}>
 			<h1>Listado de usuarios</h1>
-			<form className={style.form}>
-				<input
-					type='text'
-					value={search}
-					onChange={ev => setSearch(ev.target.value)}
-				></input>
-				<div className={style.active}>
-					<input
-						type='checkbox'
-						checked={onlyActive}
-						onChange={ev => setOnlyActive(ev.target.checked)}
-					></input>
-					<span>Sólo activos</span>
-				</div>
-				<select value={sortBy} onChange={ev => setSortBy(Number(ev.target.value))}>
-					<option value={0}>Por defecto</option>
-					<option value={1}>Por nombre</option>
-				</select>
-			</form>
-			{usersRender}
+			<UsersListFilters
+				search={search}
+				setSearch={setSearch}
+				onlyActive={onlyActive}
+				setOnlyActive={setOnlyActive}
+				sortBy={sortBy}
+				setSortBy={setSortBy}
+			/>
+			<UsersListRows users={usersFiltered}/>
 		</div>
 	);
 };
 
 const filterUsersByName = (users, search) => {
-	if (!search) return users;
+	if (!search) return [...users];
 
 	const lowerCasedSearch = search.toLowerCase();
 
@@ -50,27 +39,23 @@ const filterUsersByName = (users, search) => {
 };
 
 const filterActiveUsers = (users, active) => {
-	if (!active) return users;
+	if (!active) return [...users];
 
 	return users.filter(user => user.active);
 };
 
-const renderUsers = users => {
-	if (users.length <= 0) return <p>No hay usuarios</p>;
-
-	return users.map(item => <UserRow key={item.name} {...item} />);
-};
-
 const sortUsers = (users, sortBy) => {
+	const sortedUsers = [...users];
+
 	switch (sortBy) {
 		case 1:
-			return users.sort((a, b) => {
+			return sortedUsers.sort((a, b) => {
 				if (a.name > b.name) return 1;
 				if (a.name < b.name) return -1;
-			 return 0;
+				return 0;
 			});
 		default:
-			return users;
+			return sortedUsers;
 	}
 };
 
