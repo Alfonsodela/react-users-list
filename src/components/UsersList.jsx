@@ -1,7 +1,7 @@
 import style from './UsersList.module.css';
 import UsersListFilters from './UsersListFilters';
 import UsersListRows from './UsersListRows';
-import { UsersContext } from './lib/context/UsersContext';
+import { UsersContext } from '../lib/context/UsersContext';
 import { useState } from 'react'; 
 
 

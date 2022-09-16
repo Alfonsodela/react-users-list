@@ -1,4 +1,4 @@
-import UserRow from './UserRow';
+import UserRow from "./UserRow";
 
 const UsersListRows = ({ users }) => {
 	if (!users.length) return <p>No hay usuarios</p>;
