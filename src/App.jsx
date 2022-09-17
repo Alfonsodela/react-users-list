@@ -2,25 +2,25 @@ import UsersList from "./components/UsersList";
 
 const users = [
 	{
-		id: 0,
+		username: 'Alfonso',
 		name: 'Alfonso López de la Manzanara',
 		active: true,
-		role: 'studentss'
+		role: 'student'
 	},
 	{
-		id: 1,
+		username: 'Emely',
 		name: 'Emely Alonzo',
 		active: true,
 		role: 'student'
 	},
 	{ 
-		id: 2,
+		username: 'Pablo',
 		name: 'Pablo Castellanos',
 		active: false,
 		role: 'teacher'
 	},
 	{
-		id: 3,
+		username: 'Jose Miguel',
 		name: 'Jose Miguel Fernández',
 		active: true,
 		role: 'teacher'
