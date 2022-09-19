@@ -1,3 +1,4 @@
+import InputCheckbox from './forms/InputCheckbox';
 import InputSearch from './forms/InputSearch';
 import style from './UsersListFilters.module.css';
 
@@ -14,15 +15,13 @@ const UsersListFilters = ({
 			placeholder='Buscar...'
 			value={search}
 			onChange={ev => setSearch(ev.target.value)}
-			InputSearch
 		/>
 		<div className={style.active}>
-			<input
-				type='checkbox'
+			<InputCheckbox
 				checked={onlyActive}
 				onChange={ev => setOnlyActive(ev.target.checked)}
-			></input>
-			<span>Sólo activos</span>
+			/>
+			<span className={style}>Sólo activos</span>
 		</div>
 		<select value={sortBy} onChange={ev => setSortBy(Number(ev.target.value))}>
 			<option value={0}>Por defecto</option>
