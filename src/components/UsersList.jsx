@@ -40,11 +40,18 @@ const useFilters = () => {
 			search
 		});
 
-	const setOnlyActive = onlyActive =>
+	const setOnlyActive = onlyActive => {
+		if (onlyActive && filters.sortBy === 3)
 		setFilters({
+			...filters,
+			sortBy: 0,
+			onlyActive
+		});
+		else setFilters({
 			...filters,
 			onlyActive
 		});
+	}
 
 	const setSortBy = sortBy =>
 		setFilters({
