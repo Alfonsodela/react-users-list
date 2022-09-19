@@ -1,3 +1,4 @@
+import InputSearch from './forms/InputSearch';
 import style from './UsersListFilters.module.css';
 
 const UsersListFilters = ({
@@ -9,11 +10,12 @@ const UsersListFilters = ({
 	setSortBy
 }) => (
 	<form className={style.form}>
-		<input
-			type='text'
+		<InputSearch
+			placeholder='Buscar...'
 			value={search}
 			onChange={ev => setSearch(ev.target.value)}
-		></input>
+			InputSearch
+		/>
 		<div className={style.active}>
 			<input
 				type='checkbox'
