@@ -14,7 +14,7 @@ const UsersList = ({ initialUsers }) => {
 
 	return (
 		<div className={style.wrapper}>
-			<h1>Listado de usuarios</h1>
+			<h1 className={style.title}>Listado de usuarios</h1>
 			<UsersListFilters
 				search={search}
 				onlyActive={onlyActive}
