@@ -16,7 +16,7 @@ const UsersList = ({ initialUsers }) => {
 	const [page, setPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(2);
 
-	const { users } = getUsers(initialUsers, {
+	const { users, totalPages } = getUsers(initialUsers, {
 		search,
 		onlyActive,
 		sortBy,
@@ -40,6 +40,7 @@ const UsersList = ({ initialUsers }) => {
 				itemsPerPage={itemsPerPage}
 				setPage={setPage}
 				setItemsPerPage={setItemsPerPage}
+				totalPages={totalPages}
 			/>
 		</div>
 	);
@@ -52,9 +53,13 @@ const getUsers = (
 	let usersFiltered = filterActiveUsers(initialUsers, onlyActive);
 	usersFiltered = filterUsersByName(usersFiltered, search);
 	usersFiltered = sortUsers(usersFiltered, sortBy);
+
+	const totalPages = Math.ceil(usersFiltered.length / itemsPerPage)
+	
 	usersFiltered = paginateUsers(usersFiltered, page, itemsPerPage);
 
-	return { users: usersFiltered };
+
+	return { users: usersFiltered, totalPages };
 };
 
 export default UsersList;
