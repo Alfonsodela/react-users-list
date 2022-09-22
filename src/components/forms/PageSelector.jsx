@@ -5,7 +5,7 @@ import style from './PageSelector.module.css'
 
 const PageSelector = ({ page, setPage, totalPages }) => {
     const isFirstPage = page === 1;
-    const isLastPage = page === totalPages;
+    const isLastPage = page === totalPages || totalPages === 0;
 
 	return (
 		<div className={style.wrapper}>
@@ -16,7 +16,7 @@ const PageSelector = ({ page, setPage, totalPages }) => {
 				onClick={() => setPage(page - 1)}
 			/>
 			<span>
-				Página {page} de {totalPages}
+				Página {page} de {totalPages || 1}
 			</span>
 			<IconButton
 				filled
