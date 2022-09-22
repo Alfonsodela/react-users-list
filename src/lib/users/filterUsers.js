@@ -45,3 +45,13 @@ export const sortUsers = (users, sortBy) => {
 			return sortedUsers;
 	}
 };
+
+export const paginateUsers = (users, page, itemsPerPage) => {
+	const startIndex = (page -1) * itemsPerPage;
+	console.log(startIndex)
+	const endIndex = startIndex + itemsPerPage;
+	console.log(endIndex)
+	
+
+	return users.slice(startIndex, endIndex)
+}

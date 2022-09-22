@@ -1,22 +1,28 @@
 import style from './UsersList.module.css';
 import UsersListFilters from './UsersListFilters';
 import UsersListRows from './UsersListRows';
-import { useState } from 'react';
 import {
 	filterActiveUsers,
 	filterUsersByName,
-	sortUsers
+	sortUsers,
+	paginateUsers
 } from '../lib/users/filterUsers';
 import { useFilters } from '../lib/hooks/useFilters';
+import { useState } from 'react';
+import UsersListPagination from './UsersListPagination';
 
 const UsersList = ({ initialUsers }) => {
 	const { search, onlyActive, sortBy, ...setFiltersFunctions } = useFilters();
+	const [page, setPage] = useState(1);
+	const [itemsPerPage, setItemsPerPage] = useState(2);
 
-	const { users } = useUsers(initialUsers);
-
-	let usersFiltered = filterActiveUsers(users, onlyActive);
-	usersFiltered = filterUsersByName(usersFiltered, search);
-	usersFiltered = sortUsers(usersFiltered, sortBy);
+	const { users } = getUsers(initialUsers, {
+		search,
+		onlyActive,
+		sortBy,
+		page,
+		itemsPerPage
+	});
 
 	return (
 		<div className={style.wrapper}>
@@ -28,15 +34,27 @@ const UsersList = ({ initialUsers }) => {
 				{...setFiltersFunctions}
 			/>
 
-			<UsersListRows users={usersFiltered} />
+			<UsersListRows users={users} />
+			<UsersListPagination
+				page={page}
+				itemsPerPage={itemsPerPage}
+				setPage={setPage}
+				setItemsPerPage={setItemsPerPage}
+			/>
 		</div>
 	);
 };
 
-const useUsers = initialUsers => {
-	const [users, setUsers] = useState(initialUsers);
+const getUsers = (
+	initialUsers,
+	{ search, onlyActive, sortBy, page, itemsPerPage }
+) => {
+	let usersFiltered = filterActiveUsers(initialUsers, onlyActive);
+	usersFiltered = filterUsersByName(usersFiltered, search);
+	usersFiltered = sortUsers(usersFiltered, sortBy);
+	usersFiltered = paginateUsers(usersFiltered, page, itemsPerPage);
 
-	return { users };
+	return { users: usersFiltered };
 };
 
 export default UsersList;
