@@ -1,9 +1,9 @@
+import { useFilters } from '../lib/hooks/useFilters';
+import { useUsers } from '../lib/hooks/useUsers';
 import style from './UsersList.module.css';
 import UsersListFilters from './UsersListFilters';
 import UsersListPagination from './UsersListPagination';
 import UsersListRows from './UsersListRows';
-import { useFilters } from '../lib/hooks/useFilters';
-import { useUsers } from '../lib/hooks/useUsers';
 
 const UsersList = () => {
 	const {
@@ -15,7 +15,7 @@ const UsersList = () => {
 		setItemsPerPage
 	} = useFilters();
 
-	const { users, totalPages } = useUsers(filters);
+	const { users, totalPages, error, loading } = useUsers(filters);
 
 	return (
 		<div className={style.wrapper}>
@@ -28,8 +28,7 @@ const UsersList = () => {
 				setOnlyActive={setOnlyActive}
 				setSortBy={setSortBy}
 			/>
-
-			<UsersListRows users={users} />
+			<UsersListRows users={users} error={error} loading={loading} />
 			<UsersListPagination
 				page={filters.page}
 				itemsPerPage={filters.itemsPerPage}
