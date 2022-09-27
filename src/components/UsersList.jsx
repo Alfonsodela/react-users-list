@@ -1,5 +1,6 @@
 import { useFilters } from '../lib/hooks/useFilters';
 import { useUsers } from '../lib/hooks/useUsers';
+import InputTextAsync from './forms/InputTextAsync';
 import style from './UsersList.module.css';
 import UsersListFilters from './UsersListFilters';
 import UsersListPagination from './UsersListPagination';
