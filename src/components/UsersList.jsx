@@ -7,9 +7,10 @@ import UsersListRows from './UsersListRows';
 import { USER_FORMS } from '../constants/userForms';
 import { useState } from 'react';
 import Button from './buttons/Button';
+import UserCreateForm from './user-forms/UserCreateForm'
 
 const UsersList = () => {
-	const { currentForm, setCreateForm } = useForm();
+	const { currentForm, setCreateForm, setFiltersForm } = useForm();
 
 	const {
 		filters,
@@ -36,7 +37,7 @@ const UsersList = () => {
 					slot={<Button onClick={setCreateForm}>Añadir usuario</Button>}
 				/>
 			) : (
-				<p>Formulario de creación</p>
+				<UserCreateForm onClose={setFiltersForm}/>
 			)}
 			<UsersListRows users={users} error={error} loading={loading} />
 			<UsersListPagination
