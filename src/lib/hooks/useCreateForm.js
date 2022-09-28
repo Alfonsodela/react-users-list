@@ -4,17 +4,21 @@ import {
 	validateUsername
 } from '../../lib/users/userValidation.js';
 
-const validateUsernameAsync = async (username, setUsernameError, signal) => {
+const validateUsernameIsAvailable = async (username, setUsernameError, signal) => {
 	let error;
 	try {
-		const res = await fetch(`http://localhost:4000/users?username=${username}`, {signal});
+		const res = await fetch(
+			`http://localhost:4000/users?username=${username}`,
+			{ signal }
+		);
 		if (res.ok) {
 			const data = await res.json();
 			if (data.length) error = 'Ya está en uso';
 		} else {
 			error = 'Error al validar';
 		}
-	} catch {
+	} catch (err) {
+		if (err.name === 'AbortError') return;
 		error = 'Error al validar';
 	}
 
@@ -65,13 +69,20 @@ export const useCreateForm = () => {
 	useEffect(() => {
 		if (formValues.username.loading) {
 			const controller = new AbortController();
-			validateUsernameAsync(
-				formValues.username.value,
-				setFormValues,
-				setUsernameError,
-				controller.signal
+
+			const timeoutId = setTimeout(
+				() =>
+					validateUsernameIsAvailable(
+						formValues.username.value,
+						setUsernameError,
+						controller.signal
+					),
+				500
 			);
-			return () => controller.abort();
+			return () => {
+				controller.abort();
+				clearTimeout(timeoutId);
+			};
 		}
 	}, [formValues.username.value, formValues.username.loading]);
 
