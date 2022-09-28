@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { USER_ROLE } from '../../constants/userRoles';
 // import {
 // 	nameChanged,
@@ -16,7 +16,10 @@ import InputTextAsync from '../forms/InputTextAsync';
 import Select from '../forms/Select';
 import style from './UserCreateForm.module.css';
 import CrossIcon from '../icons/CrossIcon';
-import { validateName, validateUserName } from '../../lib/users/userValidation';
+import {
+	validateName,
+	validateUsername
+} from '../../lib/users/userValidation.js';
 
 const UserCreateForm = ({ onClose }) => {
 	const { username, name, setUserName, setName } = useFormValues();
@@ -51,8 +54,8 @@ const UserCreateForm = ({ onClose }) => {
 					className={style.input}
 					label='Username'
 					placeholder='johndoe'
-					// success={username.value && !username.loading && !username.error}
-					// loading={username.loading}
+					success={username.value && !username.loading && !username.error}
+					loading={username.loading}
 					error={username.error}
 					value={username.value}
 					onChange={ev => setUserName(ev.target.value)}
@@ -74,11 +77,43 @@ const UserCreateForm = ({ onClose }) => {
 	);
 };
 
+const validateUsernameAsync = async (username, setFormValues) => {
+	let error;
+	const res = await fetch(`http://localhost:4000/users?username=${username}`);
+	if (res.ok) {
+		const data = await res.json();
+		if (data.length) error = 'Ya está en uso';
+	} else {
+		error = 'Error al validar';
+	}
+
+	setFormValues(prevFormValues => ({
+		...prevFormValues,
+		username: {
+			value: username,
+			error,
+			loading: false
+		}
+	}));
+};
+
 const useFormValues = () => {
 	const [formValues, setFormValues] = useState({
-		name: { value: '', error: undefined },
-		username: { value: '', error: undefined }
+		name: {
+			value: '',
+			error: undefined
+		},
+		username: {
+			value: '',
+			loading: false,
+			error: undefined
+		}
 	});
+
+	useEffect(() => {
+		if (formValues.username.loading)
+			validateUsernameAsync(formValues.username.value, setFormValues);
+	}, [formValues.username.value, formValues.username.loading]);
 
 	const setName = newName => {
 		const error = validateName(newName);
@@ -90,15 +125,15 @@ const useFormValues = () => {
 	};
 
 	const setUserName = newUserName => {
-        const error = validateUserName(newUserName)
+		const error = validateUsername(newUserName);
 
 		setFormValues({
 			...formValues,
-			username: { value: newUserName, error }
+			username: { value: newUserName, loading: !error, error }
 		});
 	};
 
-    return {...formValues, setName, setUserName}
+	return { ...formValues, setName, setUserName };
 };
 
 export default UserCreateForm;
