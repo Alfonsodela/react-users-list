@@ -9,6 +9,7 @@ import Select from '../forms/Select';
 import style from './UserCreateForm.module.css';
 import CrossIcon from '../icons/CrossIcon';
 import { useState } from 'react';
+import { createUser } from '../../lib/api/usersApi';
 
 const UserCreateForm = ({ onClose }) => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,15 +84,10 @@ const handleSubmit = async (ev, name, username, setIsSubmitting, onClose) => {
 		active: ev.target.active.checked
 	};
 
-	const res = await fetch('http://localhost:4000/users', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(user)
-	});
+	const success = await createUser(user);
 
-	if (res.ok) {
+	if (success) {
+		// TODO: Actualizar los usuarios
 		onClose()
 	}
 	else { setIsSubmitting(false) }
