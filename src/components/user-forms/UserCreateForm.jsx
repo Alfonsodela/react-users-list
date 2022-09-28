@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { USER_ROLE } from '../../constants/userRoles';
 // import {
 // 	nameChanged,
@@ -16,13 +15,10 @@ import InputTextAsync from '../forms/InputTextAsync';
 import Select from '../forms/Select';
 import style from './UserCreateForm.module.css';
 import CrossIcon from '../icons/CrossIcon';
-import {
-	validateName,
-	validateUsername
-} from '../../lib/users/userValidation.js';
+import { useCreateForm } from '../../lib/hooks/useCreateForm';
 
 const UserCreateForm = ({ onClose }) => {
-	const { username, name, setUserName, setName } = useFormValues();
+	const { username, name, setUserName, setName } = useCreateForm();
 	// const { onSuccess } = useContext(UserFormsContext);
 
 	// const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,65 +71,6 @@ const UserCreateForm = ({ onClose }) => {
 			</div>
 		</form>
 	);
-};
-
-const validateUsernameAsync = async (username, setFormValues) => {
-	let error;
-	const res = await fetch(`http://localhost:4000/users?username=${username}`);
-	if (res.ok) {
-		const data = await res.json();
-		if (data.length) error = 'Ya está en uso';
-	} else {
-		error = 'Error al validar';
-	}
-
-	setFormValues(prevFormValues => ({
-		...prevFormValues,
-		username: {
-			value: username,
-			error,
-			loading: false
-		}
-	}));
-};
-
-const useFormValues = () => {
-	const [formValues, setFormValues] = useState({
-		name: {
-			value: '',
-			error: undefined
-		},
-		username: {
-			value: '',
-			loading: false,
-			error: undefined
-		}
-	});
-
-	useEffect(() => {
-		if (formValues.username.loading)
-			validateUsernameAsync(formValues.username.value, setFormValues);
-	}, [formValues.username.value, formValues.username.loading]);
-
-	const setName = newName => {
-		const error = validateName(newName);
-
-		setFormValues({
-			...formValues,
-			name: { value: newName, error }
-		});
-	};
-
-	const setUserName = newUserName => {
-		const error = validateUsername(newUserName);
-
-		setFormValues({
-			...formValues,
-			username: { value: newUserName, loading: !error, error }
-		});
-	};
-
-	return { ...formValues, setName, setUserName };
 };
 
 export default UserCreateForm;
