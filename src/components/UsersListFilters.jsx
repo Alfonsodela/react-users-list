@@ -1,3 +1,7 @@
+import { SORT_OPTIONS } from '../constants/sortOptions';
+import InputCheckbox from './forms/InputCheckbox';
+import InputSearch from './forms/InputSearch';
+import Select from './forms/Select';
 import style from './UsersListFilters.module.css';
 
 const UsersListFilters = ({
@@ -6,27 +10,37 @@ const UsersListFilters = ({
 	onlyActive,
 	setOnlyActive,
 	sortBy,
-	setSortBy
+	setSortBy,
+	slot
 }) => (
-	<form className={style.form}>
-		<input
-			type='text'
-			value={search}
-			onChange={ev => setSearch(ev.target.value)}
-		></input>
-		<div className={style.active}>
-			<input
-				type='checkbox'
-				checked={onlyActive}
-				onChange={ev => setOnlyActive(ev.target.checked)}
-			></input>
-			<span>Sólo activos</span>
+	<div className={style.form}>
+		<div className={style.row}>
+			<InputSearch
+				placeholder='Buscar...'
+				value={search}
+				onChange={ev => setSearch(ev.target.value)}
+			/>
+			<Select
+				value={sortBy}
+				onChange={ev => setSortBy(Number(ev.target.value))}
+			>
+				<option value={SORT_OPTIONS.DEFAULT}>Por defecto</option>
+				<option value={SORT_OPTIONS.NAME}>Por nombre</option>
+				<option value={SORT_OPTIONS.ROLE}>Por rol</option>
+				{!onlyActive && <option value={SORT_OPTIONS.ACTIVE}>Por activos</option>}
+			</Select>
 		</div>
-		<select value={sortBy} onChange={ev => setSortBy(Number(ev.target.value))}>
-			<option value={0}>Por defecto</option>
-			<option value={1}>Por nombre</option>
-		</select>
-	</form>
+		<div className={style.row}>
+			<div className={style.active}>
+				<InputCheckbox
+					checked={onlyActive}
+					onChange={ev => setOnlyActive(ev.target.checked)}
+				/>
+				<p className={style.span}>Mostrar sólo activos</p>
+			</div>
+			{slot}
+		</div>
+	</div>
 );
 
 export default UsersListFilters;
