@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { findAllUsers } from '../api/usersApi';
 import {
 	filterActiveUsers,
 	filterUsersByName,
@@ -6,18 +7,12 @@ import {
 	sortUsers
 } from '../users/filterUsers';
 
-const fetchUsers = async (setData, setError, signal) => {
-	try {
-		const res = await fetch('http://localhost:4000/users', { signal });
-		if (res.ok) {
-			const data = await res.json();
-			setData(data);
-		} else {
-			setError();
-		}
-	} catch (err) {
-		setError();
-	}
+const loadUsers = async (setData, setError, signal) => {
+	const { users, aborted} = await findAllUsers(signal);
+
+	if (aborted) return;
+	if (users) setData(users)
+	else setError();
 };
 
 const getUsersToDisplay = (
@@ -51,7 +46,7 @@ export const useUsers = filters => {
 	useEffect(() => {
 		const controller = new AbortController();
 
-		fetchUsers(setData, setError, controller.signal);
+		loadUsers(setData, setError, controller.signal);
 
 		return () => controller.abort();
 	}, []);
