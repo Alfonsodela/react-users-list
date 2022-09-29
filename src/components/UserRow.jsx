@@ -1,3 +1,4 @@
+import UserDisplay from './UserDisplay';
 import UserRole from './UserRole';
 import style from './UserRow.module.css';
 import UserStatus from './UserStatus';
@@ -6,7 +7,7 @@ const UserRow = ({ username, name, active, role }) => {
 	return (
 		<div className={style.user}>
 			<div className={style.name}>
-				<span>{name}</span>
+				<UserDisplay name={name} username={username}/>
 			</div>
 			<div className={style.status}>
 				<UserStatus active={active} />

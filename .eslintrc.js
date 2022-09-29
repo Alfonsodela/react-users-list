@@ -13,7 +13,8 @@ module.exports = {
 		'plugin:react/jsx-runtime',
 		'plugin:react-hooks/recommended',
 		'standard',
-		'eslint-config-prettier'
+		'eslint-config-prettier',
+		"eslint:recommended"
 	],
 	parserOptions: {
 		ecmaFeatures: {
