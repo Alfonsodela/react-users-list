@@ -7,31 +7,6 @@ import {
 	sortUsers
 } from '../users/filterUsers';
 
-const loadUsers = async (setData, setError, signal) => {
-	const { users, aborted} = await findAllUsers(signal);
-
-	if (aborted) return;
-	if (users) setData(users)
-	else setError();
-};
-
-const getUsersToDisplay = (
-	users,
-	{ search, onlyActive, sortBy, page, itemsPerPage }
-) => {
-	let usersFiltered = filterActiveUsers(users, onlyActive);
-	usersFiltered = filterUsersByName(usersFiltered, search);
-	usersFiltered = sortUsers(usersFiltered, sortBy);
-
-	const { paginatedUsers, totalPages } = paginateUsers(
-		usersFiltered,
-		page,
-		itemsPerPage
-	);
-
-	return { paginatedUsers, totalPages };
-};
-
 export const useUsers = filters => {
 	const [users, setUsers] = useState({
 		data: [],
@@ -59,4 +34,29 @@ export const useUsers = filters => {
 		error: users.error,
 		loading: users.loading
 	};
+};
+
+const loadUsers = async (setData, setError, signal) => {
+	const { users, aborted} = await findAllUsers(signal);
+
+	if (aborted) return;
+	if (users) setData(users)
+	else setError();
+};
+
+const getUsersToDisplay = (
+	users,
+	{ search, onlyActive, sortBy, page, itemsPerPage }
+) => {
+	let usersFiltered = filterActiveUsers(users, onlyActive);
+	usersFiltered = filterUsersByName(usersFiltered, search);
+	usersFiltered = sortUsers(usersFiltered, sortBy);
+
+	const { paginatedUsers, totalPages } = paginateUsers(
+		usersFiltered,
+		page,
+		itemsPerPage
+	);
+
+	return { paginatedUsers, totalPages };
 };
